@@ -60,7 +60,8 @@ class AuthAclController extends AppController {
 		$acl_admin_vars = $this->_acl_admin_tasks($this->data);
 		
 		$this->set('users', $acl_admin_vars['users']);
-		$this->set('groups', $acl_admin_vars['groups']);
+		$this->set('groups_data', $acl_admin_vars['groups_data']);
+		$this->set('groups_list', $acl_admin_vars['groups_list']);
 		$this->set('user_model', $this->AuthAcl->settings['user_model']);
 		$this->set('group_model', $this->AuthAcl->settings['group_model']);
 		$this->set('group_fkey', $acl_admin_vars['group_fkey']);
@@ -107,7 +108,7 @@ class AuthAclController extends AppController {
 		exit();
 	}
 	
-	// Quick, Dirty hack to reset user passwords.
+	// Quick, Dirty, Ugly hack to reset user passwords.
 	// On the view, the admin was prompted for a new temporary password. It is then sent here.
 	// Warning: This is insecure! It is meant only as a measure to temporarily reset a user's password. However, it passes it via the URL!
 	//
@@ -144,6 +145,79 @@ class AuthAclController extends AppController {
 		}
 		
 		$this->redirect(array('action' => 'user_admin'));
+	}
+	
+	// User interface to change password
+	public function change_password() {
+		$user_model_name = $this->AuthAcl->settings['user_model'];
+		$user_model = ClassRegistry::init($user_model_name);
+		// Unbind the AuthTokens table from $user_model
+		$user_model->unbindModel(array('hasMany' => array('AuthToken')));
+		
+		$user_id = $this->Authsome->get('AuthUser.id');
+		$username = $this->Authsome->get('username');
+		
+		if (empty($this->data)) {
+			
+			// Do nothing here, just render view
+			$this->set('show_homepage_link', false);
+			
+		} else {
+			
+			if (empty($this->data['old_passwd']) || empty($this->data['new_passwd1']) || empty($this->data['new_passwd2'])) {
+				
+				$failure = true;
+				$flash_msg = 'Please enter your current password, and your new password twice.';
+				
+			} else {
+				
+				$old_passwd_hash = $this->Authsome->hash($this->data['old_passwd']);
+				
+				$userdata = $user_model->read(array('id', 'username', 'password'), $user_id);
+				
+				if ($userdata[$user_model_name]['password'] != $old_passwd_hash) {
+					
+					$failure = true;
+					$flash_msg = 'You have entered an incorrect current password. Please try again.';
+					
+				} else if ($this->data['new_passwd1'] != $this->data['new_passwd2']) {
+					
+					$failure = true;
+					$flash_msg = 'Your new password entries did not match each other. Please try again';
+					
+				} else if ($this->data['new_passwd1'] == $this->data['old_passwd']) {
+					
+					$failure = true;
+					$flash_msg = 'Your new password cannot match your old password. Please try again';
+					
+				} else {
+					
+					$new_passwd_hash = $this->Authsome->hash($this->data['new_passwd1']);
+					$user_model->set('password', $new_passwd_hash);
+					$user_model->set('force_pass_change', false);
+					$result = $user_model->save();
+					
+					if ($result) {
+						$failure = false;
+						$flash_msg = 'Your password has been changed successfully.';
+					} else {
+						$failure = true;
+						$flash_msg = 'There was an error updating your password. Please contact a system administrator.';
+					}
+				}
+				
+			}
+			
+			if ($failure) {
+				$this->Session->setFlash($flash_msg, 'default', array('class' => 'error-message'));
+				$this->set('show_homepage_link', true);
+			} else {
+				$this->Session->setFlash($flash_msg, 'default');
+				$this->set('show_homepage_link', true);
+			}
+		}
+		
+		$this->set('username', $username);
 	}
 	
 	// AJAX Interface to retreive available 'actions' inside a given controller.
@@ -195,7 +269,7 @@ class AuthAclController extends AppController {
 	public function _acl_admin_tasks($data, $ajax_get_actions_for_controller = false) {
 		
 		// Verify access to this tool (only admins)
-		$ACL_GROUP = $this->Authsome->get('AuthGroup.name');
+		$ACL_GROUP = $this->Authsome->get($this->AuthAcl->settings['group_model'].'.name');
 		if ($ACL_GROUP != 'administrators') {
 			self::bounce_home("Only Administrators may edit ACL privileges");
 			exit();
@@ -312,17 +386,20 @@ class AuthAclController extends AppController {
 			// Unbind the AuthTokens table from $user_model
 			$user_model->unbindModel(array('hasMany' => array('AuthToken')));
 			
-			$users = $user_model->find('all', array('fields' => array('id', 'username', $this->AuthAcl->settings['group_model'].'.name', $this->AuthAcl->settings['group_model'].'.id'))); // id, user-name, group-name
+			$users = $user_model->find('all', array('fields' => array('id', 'username', $this->AuthAcl->settings['group_model'].'.name', $this->AuthAcl->settings['group_model'].'.id', 'active'))); // id, user-name, group-name
 			
-			$groups = $group_model->find('list', array('fields' => array('id', 'name')));
-			$groups = array_map('ucwords', $groups); // Convert names to Title Case
+			// Simple list of groups (for populating select lists)
+			$groups_data = $group_model->find('all');
+			$groups_list = $group_model->find('list', array('fields' => array('id', 'name')));
+			$groups_list = array_map('ucwords', $groups_list); // Convert names to Title Case
 			
 			// Register ACL lists
 			$acl_model = ClassRegistry::init('AuthAcl');
 			$acl_records = $acl_model->find('all', array('order' => array('auth_group_id ASC', 'controller ASC', 'action ASC', 'permission DESC')));
 			
 			$return_data['users'] = $users;
-			$return_data['groups'] = $groups;
+			$return_data['groups_data'] = $groups_data;
+			$return_data['groups_list'] = $groups_list;
 			$return_data['group_fkey'] = $group_fkey;
 			$return_data['controllers_actions'] = $controllers_actions;
 			$return_data['acl_records'] = $acl_records;

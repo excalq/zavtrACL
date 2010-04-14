@@ -189,7 +189,7 @@ label {
 }
 
 
-/* Specific form elements */
+/* Specific form elements (User/Group add forms) */
 
 form.acl_user_add label {
 	font-weight: bold;
