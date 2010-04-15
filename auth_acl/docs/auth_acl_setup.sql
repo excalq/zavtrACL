@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS auth_acls (
   description varchar(255) NOT NULL default '',
   PRIMARY KEY  (id),
   KEY controller (controller,`action`),
-  KEY `action` (`action`)
-  KEY auth_group_id (auth_group_id),
+  KEY `action` (`action`),
+  KEY auth_group_id (auth_group_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO auth_acls (id, auth_group_id, controller, action, permission, description) VALUES
@@ -29,7 +29,7 @@ INSERT INTO auth_acls (id, auth_group_id, controller, action, permission, descri
 CREATE TABLE IF NOT EXISTS auth_groups (
   id int(10) unsigned NOT NULL auto_increment,
   `name` varchar(40) NOT NULL,
-  description varchar(40) default NULL,
+  description varchar(255) default NULL,
   created datetime default NULL,
   modified datetime default NULL,
   PRIMARY KEY  (id)

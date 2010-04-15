@@ -49,6 +49,11 @@ class AuthAclController extends AppController {
 		$delete_key = md5($this->RequestHandler->getClientIP() . Configure::read('Security.salt'));
 		$this->set('delete_key', $delete_key);
 		
+		// If an 'action' was selected on /acl_admin, set a view variable for Ajax repopulation
+		if (!empty($this->data['action'])) {
+			$this->set('selected_action', $this->data['action']);
+		}
+		
 		// TODO: Paginate acl_records
 		
 	}
@@ -154,7 +159,7 @@ class AuthAclController extends AppController {
 		// Unbind the AuthTokens table from $user_model
 		$user_model->unbindModel(array('hasMany' => array('AuthToken')));
 		
-		$user_id = $this->Authsome->get('AuthUser.id');
+		$user_id = $this->Authsome->get('id');
 		$username = $this->Authsome->get('username');
 		
 		if (empty($this->data)) {
@@ -271,21 +276,21 @@ class AuthAclController extends AppController {
 		// Verify access to this tool (only admins)
 		$ACL_GROUP = $this->Authsome->get($this->AuthAcl->settings['group_model'].'.name');
 		if ($ACL_GROUP != 'administrators') {
-			self::bounce_home("Only Administrators may edit ACL privileges");
+			$this->AuthAcl->bounce_home("Only Administrators may edit ACL privileges");
 			exit();
 		}
 
 		$return_data = array();
 		
 		// Register 'User', 'Group', 'ACL' models to to DB operations.
-		$user_model = ClassRegistry::init($this->AuthAcl->settings['user_model']);
-		$group_model = ClassRegistry::init($this->AuthAcl->settings['group_model']);
-		$acl_model = ClassRegistry::init($this->AuthAcl->settings['acl_model']);
-		
-		$group_fkey = (Inflector::underscore($this->AuthAcl->settings['group_model']) . '_id'); // Foreign key from auth_acl to auth_group (in this case auth_group_id)
 		$user_model_name = $this->AuthAcl->settings['user_model'];
 		$group_model_name = $this->AuthAcl->settings['group_model'];
 		$acl_model_name = $this->AuthAcl->settings['acl_model'];
+		$user_model = ClassRegistry::init($user_model_name);
+		$group_model = ClassRegistry::init($group_model_name);
+		$acl_model = ClassRegistry::init($acl_model_name);
+		
+		$group_fkey = $user_model->belongsTo[$group_model_name]['foreignKey'];
 		
 		// No data submitted
 		if (empty($data)) {
@@ -346,6 +351,8 @@ class AuthAclController extends AppController {
 						// Transform controller and action names from CamelCase to userscore_format (url format)
 						$data['controller'] = Inflector::underscore($data['controller']);
 						$data['action'] = Inflector::underscore($data['action']);
+						
+						$data[$group_fkey] = $data['group']; // Save group data to that foreign key column in auth_acl
 						
 						if (empty($data['action'])) {
 							$data['action'] = '*'; // "*" wildcard is used if value was empty

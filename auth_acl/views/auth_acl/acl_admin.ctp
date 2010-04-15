@@ -3,6 +3,14 @@
 	//Load the jQuery core
 	$javascript->link('/auth_acl/js/jquery.min.js', false);
 
+	// If an'action' has already been selected, repopulated them in the AJAX call
+    $selected_action_js = 'var selectedAction = "";';
+	if (!empty($selected_action)) {
+		$selected_action_js .= "selectedAction = \"$selected_action\";\n";
+	}
+	
+	$javascript->codeBlock($selected_action_js, array("inline" => false));
+
     //and now... some file that will be specific to this view (page)
     $javascript->link('/auth_acl/js/acl_admin.js', false);
 	

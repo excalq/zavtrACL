@@ -269,8 +269,8 @@ class AuthAclComponent extends Object {
 		
 		if (!$group) {
 			$username = $this->controller->Authsome->get('username');
-			$group_name = $this->controller->Authsome->get('AuthGroup.name');
-			$group_id = $this->controller->Authsome->get('AuthGroup.id');
+			$group_name = $this->controller->Authsome->get($this->settings['group_model'].'.name');
+			$group_id = $this->controller->Authsome->get($this->settings['group_model'].'.id');
 		}
 		
 		$controller = $this->controller->params['controller'];
@@ -286,7 +286,7 @@ class AuthAclComponent extends Object {
 		//   LIMIT 1
 		//////////////////////////////////////////////////////////
 
-		$acl_model = ClassRegistry::init('AuthAcl');
+		$acl_model = ClassRegistry::init($this->settings['acl_model']);
 
 		//////////////////////////////////////////////////////////
 		// Special Debugging for ACL DB Data
@@ -322,12 +322,13 @@ class AuthAclComponent extends Object {
 		
 		// TESTING: SHOW FULL ACL MATCH SET
 		$result = $acl_model->find('first', $params);
+		$acl_model_name = $this->settings['acl_model'];
 		
 		// Permit if no ACL entry found
-		if (empty($result['AuthAcl']['permission'])) {
+		if (empty($result[$acl_model_name]['permission'])) {
 			$acl_permitted = true;
 		
-		} else if ($result['AuthAcl']['permission'] == 'allow') {
+		} else if ($result[$acl_model_name]['permission'] == 'allow') {
 			// Permit if ACL allowed
 			$acl_permitted = true;
 		} else {
