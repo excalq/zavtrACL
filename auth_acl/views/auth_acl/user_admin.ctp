@@ -22,7 +22,7 @@ echo "<h3>Users and Groups</h3>";
 // Include wildcard option
 $groups_wildcard_opt = array('*' => 'Any Group (*)');
 $groups_nowildcard = $groups_list;
-$groups_wildcard = array_merge($groups_wildcard_opt, $groups_list);
+$groups_wildcard = ($groups_wildcard_opt + $groups_list); // Alternative to array_merge(), but keeps indexes
 
 // Add users and groups
 echo "<fieldset>\n";

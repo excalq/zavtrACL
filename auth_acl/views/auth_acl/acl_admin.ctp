@@ -1,10 +1,10 @@
 <?php
 
 	//Load the jQuery core
-	$javascript->link('jquery.min.js', false);
+	$javascript->link('/auth_acl/js/jquery.min.js', false);
 
     //and now... some file that will be specific to this view (page)
-    $javascript->link('acl_admin.js', false);
+    $javascript->link('/auth_acl/js/acl_admin.js', false);
 	
 	// Plugin stylesheet
 	echo $html->css('/auth_acl/css/auth_acl_styles.css');
@@ -24,15 +24,16 @@ echo "<h3>ACL Rules</h3>";
 // Build "Groups" select menu.
 // Include wildcard option
 $groups_wildcard_opt = array('*' => 'Any Group (*)');
-$groups_nowildcard = $groups;
-$groups_wildcard = array_merge($groups_wildcard_opt, $groups);
+$groups_nowildcard = $groups_list;
+//$groups_wildcard = array_merge($groups_wildcard_opt, $groups_list);
+$groups_wildcard = ($groups_wildcard_opt + $groups_list); // Alternative to array_merge(), but keeps indexes
 
 // Build "Controllers" select menu.
 // This is in the format array(controllers => controllers) (since option values must be valid names, not ids)
 // Because of this, we need to extract just names from the original data array.
 $controllers_wildcard = array('*' => 'Any Controller (*)');
 $controllers_list = array_combine(array_keys($controllers_actions), array_keys($controllers_actions));
-$controllers = array_merge($controllers_wildcard, $controllers_list);
+$controllers = ($controllers_wildcard + $controllers_list); // Alternative to array_merge(), but keeps indexes
 
 // Actions select menu is built with AJAX
 
@@ -44,6 +45,13 @@ $actions = array();
 // Add ACL records
 echo "<fieldset>\n";
 	echo "<legend>Add ACL Record</legend>\n";
+	echo "<p>Tips:
+			<ul>
+				<li>Rules are applied in order of specific detail.</li>
+				<li>A rule stating a specific user, controller, and action takes precedence over a more generic contrary rule.</li>
+				<li>Create rules allowing access to admins and access to login/logout before adding restrictive rules!</li>
+			</ul>
+			</p>";
 	echo $form->create(null, array('name' => 'acl_add', 'class' => 'acl_add', 'action' => 'acl_admin'));
 		echo $form->hidden('form.acl_admin_task', array('value' => 'add_acl_rule'));
 		echo $form->label('group', 'Select Group');
@@ -96,7 +104,7 @@ if (!empty($acl_records)) {
 		$group_id = $record['AuthAcl'][$group_fkey];
 		
 		if ($group_id != '*') {
-			$record['AuthAcl'][$group_fkey] = $groups[$group_id]; // Translate group id to group name
+			$record['AuthAcl'][$group_fkey] = $groups_list[$group_id]; // Translate group id to group name
 		}
 		
 		echo "<tr>";

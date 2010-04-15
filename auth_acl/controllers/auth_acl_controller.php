@@ -37,7 +37,7 @@ class AuthAclController extends AppController {
 		$acl_admin_vars = $this->_acl_admin_tasks($this->data);
 		
 		$this->set('users', $acl_admin_vars['users']);
-		$this->set('groups', $acl_admin_vars['groups']);
+		$this->set('groups_list', $acl_admin_vars['groups_list']);
 		$this->set('group_fkey', $acl_admin_vars['group_fkey']);
 		$this->set('user_model', $this->AuthAcl->settings['user_model']);
 		$this->set('acl_model', $this->AuthAcl->settings['acl_model']);
@@ -302,6 +302,7 @@ class AuthAclController extends AppController {
 						
 						// Add calculated fields, and hash password
 						$user_model->set('active', '1');
+						$user_model->set('force_pass_change', '1');
 						$user_model->set('created', gmdate("Y-m-d H:i:s"));
 						$user_model->set('modified', gmdate("Y-m-d H:i:s"));
 						$data[$user_model_name]['password'] = $this->Authsome->hash($data[$user_model_name]['password']);

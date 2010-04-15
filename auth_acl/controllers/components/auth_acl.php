@@ -1,5 +1,5 @@
 <?php
-// Dysentery (Dis-Entry) the Oregon Trail ACL
+// AuthAcl - Arthur's ACL CakePHP Plugin for CakePHP 1.2
 // 2010-04-01 - Arthur Ketcham
 
 //
@@ -16,7 +16,7 @@
 // 2. Setup users and groups in the app database. See the dystentery_users.sql file for db structure.
 //    Each user needs a group_id set. The groups table gives a name for each group.
 //
-// 3. the dysentery_acl table defines the controllers and actions a group or user has access to. 
+// 3. the auth_acl table defines the controllers and actions a group or user has access to. 
 //    To grant access, enter the name of the controller and optionally the action.
 //    If only a controller name is present, full access will be granted to that controller's actions.
 //    You may also use the * keyword for access to any controllers or actions (such as for an admin user)
@@ -63,7 +63,7 @@
 //
 // 7. Usage in app:
 //   a) Add these lines to a controller:
-//		if ($this->DysenteryAcl->acl_verify_access()) { do protected stuff }
+//		if ($this->AuthAcl->acl_verify_access()) { do protected stuff }
 //
 //  b) Or, put these lines in the app_controller, which governs access to all controllers/actions:
 //		if (!$this->Authsome->get('id')) {
@@ -72,8 +72,8 @@
 //				$this->redirect(array('controller' => 'auth_users', 'action' => 'login'));
 //			}
 //		} else {
-//			if (!$this->DysenteryAcl->acl_verify_access()) {
-//				$this->DysenteryAcl->bounce_home('Access is denied to ' . $this->params['controller'] . '/'. $this->params['action'] . '.');
+//			if (!$this->AuthAcl->acl_verify_access()) {
+//				$this->AuthAcl->bounce_home('Access is denied to ' . $this->params['controller'] . '/'. $this->params['action'] . '.');
 //				exit();
 //			}
 //		}
@@ -100,7 +100,7 @@ class AuthAclComponent extends Object {
 		$this->controller = $controller; // Set reference to controller
 	}
 
-	// --- Custom DysenteryACL user methods ---
+	// --- Custom AuthACL user methods ---
 	
 	/**
 	 * Returns list of allowed web apps (sites) user may operate upon or modify
@@ -247,7 +247,7 @@ class AuthAclComponent extends Object {
 	
 	
 	
-	// --- Standard DysenteryACL methods ---
+	// --- Standard AuthACL methods ---
 	
 	
 	// Verify privilages for the current controller/action
