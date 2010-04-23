@@ -111,6 +111,8 @@ class AuthAclComponent extends Object {
 	 *
 	 * @return - depends on $return_assoc_array. Either array of sites, or array of (site => description).
 	 *   If no permissions (sites) were granted, then false is returned.
+	 *
+	 *   TODO: Use Application Config in Bootstrap
 	 */
 	public function acl_custom_get_allowed_sites_list($group, $return_assoc_array = false) {
 		$std_available_sites = array(
@@ -164,26 +166,43 @@ class AuthAclComponent extends Object {
 		
 		$std_available_environments = array(
 			'' => 'Select Environment'    ,
-			'development'  => 'Development',
+			'development1'  => 'Development 1',
 			'development2' => 'Development 2',
 			'qa1'          => 'QA 1',
-			'qa2'          => 'QA 2',
-			'qa3'          => 'QA 3'
+			'qa2'          => 'QA 2 / Security',
+			'qa3'          => 'QA 3',
+			'qa3'          => 'QA 3',
 		);
+		
+		$production_environments = array(
+			'production_eu' => 'EU Production',
+			'production_na' => 'NA Production',
+		);
+		
+		$development_environments = array(
+			'development1' => 'Development 1',
+			'development2' => 'Development 2'
+		);
+			
+		$oregontrail_environments = array(
+			'capistrano' => 'Oregon Trail',
+		);
+		
 		
 		// Available Sites and Environments, determined by ACL
 		switch ($group) {
 			case 'operations':
 			case 'producers':
 				$available_environments = $std_available_environments;
+				$available_environments = array_merge($available_environments, $production_environments); // Add production to list
 				break;
-			case 'developers':
-				$available_environments = array('development' => 'Development', 'development2' => 'Development 2'); // Only Dev Environments
+			case 'developers': // Only Dev Environments
+				$available_environments = $development_environments;
 				break;
 			case 'administrators':
 				$available_environments = $std_available_environments;
-				// Add oregon trail to deployables list
-				$available_environments = array_merge($available_environments, array('capistrano' => 'Oregon Trail'));
+				$available_environments = array_merge($available_environments, $production_environments); // Add production to list
+				$available_environments = array_merge($available_environments, $oregontrail_environments); // Add oregon trail to list
 				break;
 			default: // They should have been redirected out of here, so this should not happen
 				return false;

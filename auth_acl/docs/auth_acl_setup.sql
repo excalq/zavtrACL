@@ -1,3 +1,14 @@
+-- -------------------------------------
+-- Auth_Acl CakePHP Plugin
+-- Written by Arthur Ketcham - 2010-04-01
+-- 
+-- This inserts user, group, auth_token, and auth_acl tables.
+-- The names and foreign keys should match that of your cake models and configuration in app_controller.php
+-- The name of user, group, and acl tables/models can be changed to anything,
+-- with only an update to config vars in app_controller.php necessary.
+-- 
+-- -------------------------------------
+-- -------------------------------------
 
 --
 -- Table structure for table 'auth_acls'
@@ -83,7 +94,6 @@ CREATE TABLE IF NOT EXISTS auth_users (
 --
 
 -- Create 'admin' user. It is necessary to generate a hashed password using your App's salt (Hint: call Security::hash('yourPassword', 'sha1', true) somewhere to generate, and paste it here)
--- TEST: faf986a9f341864185515d22d23bf96e463c0dfb BobsYourUncle
 
 INSERT INTO auth_users (id, username, password, auth_group_id, email, active, force_pass_change, created, modified) VALUES
 (1, 'admin', '[salted-password]', 1, 'your-email@example.com', 1, 0, now(), now());

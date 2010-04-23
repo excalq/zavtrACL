@@ -1,0 +1,7 @@
+Installing Auth_Acl
+
+
+(If user table exists, use that)
+
+- Create Group table and model
+(CMS: Using name "Groups"
