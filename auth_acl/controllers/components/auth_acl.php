@@ -112,7 +112,7 @@ class AuthAclComponent extends Object {
 	 * @return - depends on $return_assoc_array. Either array of sites, or array of (site => description).
 	 *   If no permissions (sites) were granted, then false is returned.
 	 *
-	 *   TODO: Use Application Config in Bootstrap
+	 *   TODO: Use Application Config in OregonTrail's Bootstrap
 	 */
 	public function acl_custom_get_allowed_sites_list($group, $return_assoc_array = false) {
 		$std_available_sites = array(
