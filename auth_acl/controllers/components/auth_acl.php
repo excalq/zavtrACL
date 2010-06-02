@@ -166,12 +166,14 @@ class AuthAclComponent extends Object {
 		
 		$std_available_environments = array(
 			'' => 'Select Environment'    ,
-			'development1'  => 'Development 1',
+			'development1' => 'Development 1',
 			'development2' => 'Development 2',
-			'qa1'          => 'QA 1',
-			'qa2'          => 'QA 2 / Security',
-			'qa3'          => 'QA 3',
-			'qa3'          => 'QA 3',
+			'qa1_eu'       => 'QA 1 - EU',
+			'qa1_na'       => 'QA 1 - NA',
+			'qa2_eu'       => 'QA 2 / Security - EU',
+			'qa2_na'       => 'QA 2 / Security - NA',
+			'qa3_eu'       => 'QA 3 - EU',
+			'qa3_na'       => 'QA 3 - NA',
 		);
 		
 		$production_environments = array(
