@@ -187,7 +187,9 @@ class AuthAclComponent extends Object {
 		);
 			
 		$oregontrail_environments = array(
-			'capistrano' => 'Oregon Trail',
+			'capistrano' => 'RTW Oregon Trail Master',
+			'production_eu_linux_mgr' => 'Prod EU Linux Manager',
+			'production_na_linux_mgr' => 'Prod NA Linux Manager',
 		);
 		
 		
