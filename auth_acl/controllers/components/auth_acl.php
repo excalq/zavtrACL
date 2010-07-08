@@ -112,43 +112,44 @@ class AuthAclComponent extends Object {
 	 * @return - depends on $return_assoc_array. Either array of sites, or array of (site => description).
 	 *   If no permissions (sites) were granted, then false is returned.
 	 *
-	 *   TODO: Use Application Config in OregonTrail's Bootstrap
+	 *   NOW DEPRECATED. Use Configure::read('deployable_apps')
 	 */
 	public function acl_custom_get_allowed_sites_list($group, $return_assoc_array = false) {
-		$std_available_sites = array(
-			''         => 'Select Application'    ,
-			'apb_beta' => 'APB Beta'              ,
-			'apb_cms'  => 'APB CMS'               ,
-			'apb_www'  => 'APB.com'               ,
-			'rtw_login'=> 'RTW Login'             ,
-			'keymaster'=> 'RTW Keymaster'         ,
-			'rtw_www'  => 'Realtimeworlds.com'
-		);
-		
-		// All apps are available to all users, however OT admins, also can operate with OregonTrail
-		switch ($group) {
-			case 'operations':
-			case 'producers':
-				$available_sites = $std_available_sites;
-				break;
-			case 'developers':
-				$available_sites = $std_available_sites;
-				break;
-			case 'administrators':
-				$available_sites = $std_available_sites;
-				// Add oregon trail to deployables list
-				$available_sites = array_merge($available_sites, array('oregontrail' => 'Oregon Trail'));
-				break;
-			default:
-				return false;
-				break;
-		}
-		
-		if ($return_assoc_array) {
-			return $available_sites;
-		} else {
-			return array_keys($available_sites); // Discard the Human Readable "descriptions"	
-		}
+		die('NOW DEPRECATED. Use Configure::read(\'deployable_apps\')');
+		//$std_available_sites = array(
+		//	''         => 'Select Application'    ,
+		//	'apb_beta' => 'APB Beta'              ,
+		//	'apb_cms'  => 'APB CMS'               ,
+		//	'apb_www'  => 'APB.com'               ,
+		//	'rtw_login'=> 'RTW Login'             ,
+		//	'keymaster'=> 'RTW Keymaster'         ,
+		//	'rtw_www'  => 'Realtimeworlds.com'
+		//);
+		//
+		//// All apps are available to all users, however OT admins, also can operate with OregonTrail
+		//switch ($group) {
+		//	case 'operations':
+		//	case 'producers':
+		//		$available_sites = $std_available_sites;
+		//		break;
+		//	case 'developers':
+		//		$available_sites = $std_available_sites;
+		//		break;
+		//	case 'administrators':
+		//		$available_sites = $std_available_sites;
+		//		// Add oregon trail to deployables list
+		//		$available_sites = array_merge($available_sites, array('oregontrail' => 'Oregon Trail'));
+		//		break;
+		//	default:
+		//		return false;
+		//		break;
+		//}
+		//
+		//if ($return_assoc_array) {
+		//	return $available_sites;
+		//} else {
+		//	return array_keys($available_sites); // Discard the Human Readable "descriptions"	
+		//}
 	}
 	
 	/**
@@ -160,64 +161,67 @@ class AuthAclComponent extends Object {
 	 *
 	 * @return - depends on $return_assoc_array. Either array of environments, or array of (environments => description)
 	 *   If no permissions (environments) were granted, then false is returned.
+	 *
+	 *   NOW DEPRECATED. Use Configure::read('deployable_envs')
 	 */
 	public function acl_custom_get_allowed_environments_list($group, $return_assoc_array = false) {
-		
-		
-		$std_available_environments = array(
-			'' => 'Select Environment'    ,
-			'development1' => 'Development 1',
-			'development2' => 'Development 2',
-			'qa1_eu'       => 'QA 1 - EU',
-			'qa1_na'       => 'QA 1 - NA',
-			'qa2_eu'       => 'QA 2 / Security - EU',
-			'qa2_na'       => 'QA 2 / Security - NA',
-			'qa3_eu'       => 'QA 3 - EU',
-			'qa3_na'       => 'QA 3 - NA',
-		);
-		
-		$production_environments = array(
-			'production_eu' => 'EU Production',
-			'production_na' => 'NA Production',
-		);
-		
-		$development_environments = array(
-			'development1' => 'Development 1',
-			'development2' => 'Development 2'
-		);
-			
-		$oregontrail_environments = array(
-			'capistrano' => 'RTW Oregon Trail Master',
-			'production_eu_linux_mgr' => 'Prod EU Linux Manager',
-			'production_na_linux_mgr' => 'Prod NA Linux Manager',
-		);
-		
-		
-		// Available Sites and Environments, determined by ACL
-		switch ($group) {
-			case 'operations':
-			case 'producers':
-				$available_environments = $std_available_environments;
-				$available_environments = array_merge($available_environments, $production_environments); // Add production to list
-				break;
-			case 'developers': // Only Dev Environments
-				$available_environments = $development_environments;
-				break;
-			case 'administrators':
-				$available_environments = $std_available_environments;
-				$available_environments = array_merge($available_environments, $production_environments); // Add production to list
-				$available_environments = array_merge($available_environments, $oregontrail_environments); // Add oregon trail to list
-				break;
-			default: // They should have been redirected out of here, so this should not happen
-				return false;
-				break;
-		}
-		
-		if ($return_assoc_array) {
-			return $available_environments;
-		} else {
-			return array_keys($available_environments);	// Discard the Human Readable "descriptions"
-		}
+		die('NOW DEPRECATED. Use Configure::read(\'deployable_envs\')');
+		//
+		//
+		//$std_available_environments = array(
+		//	'' => 'Select Environment'    ,
+		//	'development1' => 'Development 1',
+		//	'development2' => 'Development 2',
+		//	'qa1_eu'       => 'QA 1 - EU',
+		//	'qa1_na'       => 'QA 1 - NA',
+		//	'qa2_eu'       => 'QA 2 / Security - EU',
+		//	'qa2_na'       => 'QA 2 / Security - NA',
+		//	'qa3_eu'       => 'QA 3 - EU',
+		//	'qa3_na'       => 'QA 3 - NA',
+		//);
+		//
+		//$production_environments = array(
+		//	'production_eu' => 'EU Production',
+		//	'production_na' => 'NA Production',
+		//);
+		//
+		//$development_environments = array(
+		//	'development1' => 'Development 1',
+		//	'development2' => 'Development 2'
+		//);
+		//	
+		//$oregontrail_environments = array(
+		//	'capistrano' => 'RTW Oregon Trail Master',
+		//	'production_eu_linux_mgr' => 'Prod EU Linux Manager',
+		//	'production_na_linux_mgr' => 'Prod NA Linux Manager',
+		//);
+		//
+		//
+		//// Available Sites and Environments, determined by ACL
+		//switch ($group) {
+		//	case 'operations':
+		//	case 'producers':
+		//		$available_environments = $std_available_environments;
+		//		$available_environments = array_merge($available_environments, $production_environments); // Add production to list
+		//		break;
+		//	case 'developers': // Only Dev Environments
+		//		$available_environments = $development_environments;
+		//		break;
+		//	case 'administrators':
+		//		$available_environments = $std_available_environments;
+		//		$available_environments = array_merge($available_environments, $production_environments); // Add production to list
+		//		$available_environments = array_merge($available_environments, $oregontrail_environments); // Add oregon trail to list
+		//		break;
+		//	default: // They should have been redirected out of here, so this should not happen
+		//		return false;
+		//		break;
+		//}
+		//
+		//if ($return_assoc_array) {
+		//	return $available_environments;
+		//} else {
+		//	return array_keys($available_environments);	// Discard the Human Readable "descriptions"
+		//}
 	}
 
 
@@ -233,36 +237,37 @@ class AuthAclComponent extends Object {
 	 *   If no permissions (environments) were granted, then false is returned.
 	 */
 	public function acl_custom_verify_allowed_envsite($group, $site, $environment) {
-			
-			// Dynamically build list of allowed sites/envs. from existing ACL function.
-			$allowed_sites = self::acl_custom_get_allowed_sites_list($group, false);
-			$allowed_environments = self::acl_custom_get_allowed_environments_list($group, false);
-			
-			if (!is_array($allowed_sites) || !is_array($allowed_environments)) {
-				self::bounce_home('There was an error retrieving site/environment data.');
-			}
-			
-			$site_permitted = false;
-			$environment_permitted = false;
-			
-			// Site must be allowed
-			if (in_array($site, $allowed_sites)) {
-				$site_permitted = true;
-			}
-			
-			// Environment must be allowed, or not be specified
-			if (in_array($environment, $allowed_environments) || (!$environment) ) {
-				$environment_permitted = true;
-			}
-			
-			if (!$site_permitted || !$environment_permitted) {
-				
-				// Exit page and redirect to Oregon Trail home.
-				$flash_msg = 'User does not have access to requested site or environment.';
-				self::bounce_home($flash_msg);
-			} else {
-				return true;
-			}
+		die('NOW DEPRECATED. Use Configure::read(\'deployable_apps\') and Configure::read(\'deployable_envs\')');
+			//
+			//// Dynamically build list of allowed sites/envs. from existing ACL function.
+			//$allowed_sites = self::acl_custom_get_allowed_sites_list($group, false);
+			//$allowed_environments = self::acl_custom_get_allowed_environments_list($group, false);
+			//
+			//if (!is_array($allowed_sites) || !is_array($allowed_environments)) {
+			//	self::bounce_home('There was an error retrieving site/environment data.');
+			//}
+			//
+			//$site_permitted = false;
+			//$environment_permitted = false;
+			//
+			//// Site must be allowed
+			//if (in_array($site, $allowed_sites)) {
+			//	$site_permitted = true;
+			//}
+			//
+			//// Environment must be allowed, or not be specified
+			//if (in_array($environment, $allowed_environments) || (!$environment) ) {
+			//	$environment_permitted = true;
+			//}
+			//
+			//if (!$site_permitted || !$environment_permitted) {
+			//	
+			//	// Exit page and redirect to Oregon Trail home.
+			//	$flash_msg = 'User does not have access to requested site or environment.';
+			//	self::bounce_home($flash_msg);
+			//} else {
+			//	return true;
+			//}
 	}
 	
 	
