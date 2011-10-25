@@ -1,20 +1,20 @@
 <?php
 
 //Load the jQuery core
-$javascript->link('/auth_acl/js/jquery.min.js', false);
+$javascript->link('/zaftracl/js/jquery.min.js', false);
 
 //and now... some file that will be specific to this view (page)
-$javascript->link('/auth_acl/js/acl_admin.js', false);
+$javascript->link('/zaftracl/js/acl_admin.js', false);
 
 // Plugin stylesheet
-echo $html->css('/auth_acl/css/auth_acl_styles.css');
+echo $html->css('/zaftracl/css/auth_acl_styles.css');
 
 $session->flash(); // this line displays our flash messages
 	
 
 echo "<h2>ACL Administration Panel</h2>";
 
-echo "<p><img src=\"/auth_acl/img/acl.png\" /> ".$html->link('ACL Rule Administration', array('controller' => 'auth_acl' ,'action' => 'acl_admin'))."</p>";
+echo "<p><img src=\"/zaftracl/img/acl.png\" /> ".$html->link('ACL Rule Administration', array('controller' => 'auth_acl' ,'action' => 'acl_admin'))."</p>";
 
 echo "<h3>Users and Groups</h3>";
 
@@ -90,7 +90,7 @@ echo "<fieldset>\n";
 					echo $form->input("$user_model.$user_id.active", array('label' => false, 'checked'=> $user_active));
 					echo "</td>";
 					
-					echo "<td>". $html->link($html->image("/auth_acl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
+					echo "<td>". $html->link($html->image("/zaftracl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
 											 array('action' => 'delete_item', 'user', $user_record[$user_model]['id'], $delete_key),
 											 false,
 											 'Confirm deletion of this ACL record?',
@@ -99,14 +99,14 @@ echo "<fieldset>\n";
 					echo $html->link("Delete", array('action' => 'delete_item', 'user', $user_record[$user_model]['id'], $delete_key), false, 'Confirm deletion of this user?', false) . "</td>";
 					
 					// Warning: This is insecure! It is meant only as a measure to temporarily reset a user's password. However, it passes it via the URL!
-					echo "<td>". $html->link($html->image("/auth_acl/img/reset-pw.png", array('title' => 'Reset Password', 'alt' => 'ResetPw'))." ",
-											 "javascript:var temppw=prompt('Set the new temporary password:'); window.location.href = '/auth_acl/reset_password/{$user_id}/'+temppw+'/{$delete_key}';",
+					echo "<td>". $html->link($html->image("/zaftracl/img/reset-pw.png", array('title' => 'Reset Password', 'alt' => 'ResetPw'))." ",
+											 "javascript:var temppw=prompt('Set the new temporary password:'); window.location.href = '/zaftracl/reset_password/{$user_id}/'+temppw+'/{$delete_key}';",
 											 false,
 											 null,
 											 false);
 					
 					echo $html->link("Reset Password",
-									 "javascript:var temppw=prompt('Set the new temporary password:'); window.location.href = '/auth_acl/reset_password/{$user_id}/'+temppw+'/{$delete_key}';",
+									 "javascript:var temppw=prompt('Set the new temporary password:'); window.location.href = '/zaftracl/reset_password/{$user_id}/'+temppw+'/{$delete_key}';",
 									 false,
 									 null,
 									 false);
@@ -153,7 +153,7 @@ echo "<fieldset>\n";
 					echo "<td>{$group_name}</td>";
 					echo "<td>{$group_descr}</td>";
 					
-					echo "<td>". $html->link($html->image("/auth_acl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
+					echo "<td>". $html->link($html->image("/zaftracl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
 											 array('action' => 'delete_item', 'group', $group_id, $delete_key),
 											 false,
 											 'Confirm deletion of this ACL record?',

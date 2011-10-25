@@ -9,10 +9,10 @@
 
 App::import('Sanitize');
 
-class AuthAclController extends AppController {
+class ZavtraclController extends AppController {
 
-    public $name = 'AuthAcl';
-	public $components = array ('AuthAcl', 'RequestHandler');
+    public $name = 'Zavtracl';
+	public $components = array ('Zavtracl', 'RequestHandler');
 	public $uses = null;
 	public $helpers = array('Html', 'Form', 'Javascript'); // For acl admin page
 	
@@ -39,8 +39,8 @@ class AuthAclController extends AppController {
 		$this->set('users', $acl_admin_vars['users']);
 		$this->set('groups_list', $acl_admin_vars['groups_list']);
 		$this->set('group_fkey', $acl_admin_vars['group_fkey']);
-		$this->set('user_model', $this->AuthAcl->settings['user_model']);
-		$this->set('acl_model', $this->AuthAcl->settings['acl_model']);
+		$this->set('user_model', $this->Zavtracl->settings['user_model']);
+		$this->set('acl_model', $this->Zavtracl->settings['acl_model']);
 		
 		$this->set('controllers_actions', $acl_admin_vars['controllers_actions']);
 		$this->set('acl_records', $acl_admin_vars['acl_records']);
@@ -67,8 +67,8 @@ class AuthAclController extends AppController {
 		$this->set('users', $acl_admin_vars['users']);
 		$this->set('groups_data', $acl_admin_vars['groups_data']);
 		$this->set('groups_list', $acl_admin_vars['groups_list']);
-		$this->set('user_model', $this->AuthAcl->settings['user_model']);
-		$this->set('group_model', $this->AuthAcl->settings['group_model']);
+		$this->set('user_model', $this->Zavtracl->settings['user_model']);
+		$this->set('group_model', $this->Zavtracl->settings['group_model']);
 		$this->set('group_fkey', $acl_admin_vars['group_fkey']);
 		
 		// hash key to provide with "delete" link
@@ -133,7 +133,7 @@ class AuthAclController extends AppController {
 				
 				// Handle with private task handling function
 				
-				$user_model_name = $this->AuthAcl->settings['user_model'];
+				$user_model_name = $this->Zavtracl->settings['user_model'];
 				$user_model = ClassRegistry::init($user_model_name);
 				$user = $user_model->read(null, $id);
 				$user_name = $user[$user_model_name]['username'];
@@ -154,7 +154,7 @@ class AuthAclController extends AppController {
 	
 	// User interface to change password
 	public function change_password() {
-		$user_model_name = $this->AuthAcl->settings['user_model'];
+		$user_model_name = $this->Zavtracl->settings['user_model'];
 		$user_model = ClassRegistry::init($user_model_name);
 		// Unbind the AuthTokens table from $user_model
 		$user_model->unbindModel(array('hasMany' => array('AuthToken')));
@@ -274,18 +274,18 @@ class AuthAclController extends AppController {
 	public function _acl_admin_tasks($data, $ajax_get_actions_for_controller = false) {
 		
 		// Verify access to this tool (only admins)
-		$ACL_GROUP = $this->Authsome->get($this->AuthAcl->settings['group_model'].'.name');
+		$ACL_GROUP = $this->Authsome->get($this->Zavtracl->settings['group_model'].'.name');
 		if ($ACL_GROUP != 'administrators') {
-			$this->AuthAcl->bounce_home("Only Administrators may edit ACL privileges");
+			$this->Zavtracl->bounce_home("Only Administrators may edit ACL privileges");
 			exit();
 		}
 
 		$return_data = array();
 		
 		// Register 'User', 'Group', 'ACL' models to to DB operations.
-		$user_model_name = $this->AuthAcl->settings['user_model'];
-		$group_model_name = $this->AuthAcl->settings['group_model'];
-		$acl_model_name = $this->AuthAcl->settings['acl_model'];
+		$user_model_name = $this->Zavtracl->settings['user_model'];
+		$group_model_name = $this->Zavtracl->settings['group_model'];
+		$acl_model_name = $this->Zavtracl->settings['acl_model'];
 		$user_model = ClassRegistry::init($user_model_name);
 		$group_model = ClassRegistry::init($group_model_name);
 		$acl_model = ClassRegistry::init($acl_model_name);
@@ -394,7 +394,7 @@ class AuthAclController extends AppController {
 			// Unbind the AuthTokens table from $user_model
 			$user_model->unbindModel(array('hasMany' => array('AuthToken')));
 			
-			$users = $user_model->find('all', array('fields' => array('id', 'username', $this->AuthAcl->settings['group_model'].'.name', $this->AuthAcl->settings['group_model'].'.id', 'active'))); // id, user-name, group-name
+			$users = $user_model->find('all', array('fields' => array('id', 'username', $this->Zavtracl->settings['group_model'].'.name', $this->AuthAcl->settings['group_model'].'.id', 'active'))); // id, user-name, group-name
 			
 			// Simple list of groups (for populating select lists)
 			$groups_data = $group_model->find('all');
@@ -402,7 +402,7 @@ class AuthAclController extends AppController {
 			$groups_list = array_map('ucwords', $groups_list); // Convert names to Title Case
 			
 			// Register ACL lists
-			$acl_model = ClassRegistry::init('AuthAcl');
+			$acl_model = ClassRegistry::init('Zavtracl');
 			$acl_records = $acl_model->find('all', array('order' => array('auth_group_id ASC', 'controller ASC', 'action ASC', 'permission DESC')));
 			
 			$return_data['users'] = $users;
@@ -422,9 +422,9 @@ class AuthAclController extends AppController {
 	// Handle deletion requests for users, groups, and acl_rules
 	/////////////////////////////////////////////////////////////////////
 	public function _acl_admin_delete($type, $id) {
-		$user_model = ClassRegistry::init($this->AuthAcl->settings['user_model']);
-		$group_model = ClassRegistry::init($this->AuthAcl->settings['group_model']);
-		$acl_model = ClassRegistry::init($this->AuthAcl->settings['acl_model']);
+		$user_model = ClassRegistry::init($this->Zavtracl->settings['user_model']);
+		$group_model = ClassRegistry::init($this->Zavtracl->settings['group_model']);
+		$acl_model = ClassRegistry::init($this->Zavtracl->settings['acl_model']);
 		
 		switch ($type) {
 			case 'user':

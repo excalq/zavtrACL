@@ -1,8 +1,8 @@
 <?php
 
-class AuthAcl extends AppModel {
+class Zavtracl extends AppModel {
 
-	var $name = 'AuthAcl';
+	var $name = 'Zavtracl';
 	
 	var $validate = array(
 		'name' => array('notempty'),

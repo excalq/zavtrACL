@@ -1,5 +1,5 @@
 <?php
-// AuthAcl - Arthur's ACL CakePHP Plugin for CakePHP 1.2
+// Zavtracl - Arthur's ACL CakePHP Plugin for CakePHP 1.2
 // 2010-04-01 - Arthur Ketcham
 
 //
@@ -63,7 +63,7 @@
 //
 // 7. Usage in app:
 //   a) Add these lines to a controller:
-//		if ($this->AuthAcl->acl_verify_access()) { do protected stuff }
+//		if ($this->Zavtracl->acl_verify_access()) { do protected stuff }
 //
 //  b) Or, put these lines in the app_controller, which governs access to all controllers/actions:
 //		if (!$this->Authsome->get('id')) {
@@ -72,18 +72,18 @@
 //				$this->redirect(array('controller' => 'auth_users', 'action' => 'login'));
 //			}
 //		} else {
-//			if (!$this->AuthAcl->acl_verify_access()) {
-//				$this->AuthAcl->bounce_home('Access is denied to ' . $this->params['controller'] . '/'. $this->params['action'] . '.');
+//			if (!$this->Zavtracl->acl_verify_access()) {
+//				$this->Zavtracl->bounce_home('Access is denied to ' . $this->params['controller'] . '/'. $this->params['action'] . '.');
 //				exit();
 //			}
 //		}
 //
-class AuthAclComponent extends Object {
+class ZavtraclComponent extends Object {
 
 	public $settings = array(
 		'user_model' => 'User',
 		'group_model' => 'Group',
-		'acl_model' => 'AuthAcl'
+		'acl_model' => 'Zavtracl'
 	);
 		
 	private $controller;

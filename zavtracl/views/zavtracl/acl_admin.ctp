@@ -1,7 +1,7 @@
 <?php
 
 	//Load the jQuery core
-	$javascript->link('/auth_acl/js/jquery.min.js', false);
+	$javascript->link('/zaftracl/js/jquery.min.js', false);
 
 	// If an'action' has already been selected, repopulated them in the AJAX call
     $selected_action_js = 'var selectedAction = "";';
@@ -12,10 +12,10 @@
 	$javascript->codeBlock($selected_action_js, array("inline" => false));
 
     //and now... some file that will be specific to this view (page)
-    $javascript->link('/auth_acl/js/acl_admin.js', false);
+    $javascript->link('/zaftracl/js/acl_admin.js', false);
 	
 	// Plugin stylesheet
-	echo $html->css('/auth_acl/css/auth_acl_styles.css');
+	echo $html->css('/zaftracl/css/auth_acl_styles.css');
 
 	$session->flash(); // this line displays our flash messages
 ?>
@@ -24,7 +24,7 @@
 	
 echo "<h2>ACL Administration Panel</h2>";
 
-echo "<p><img src=\"/auth_acl/img/users.png\" /> ".$html->link('User Administration', array('controller' => 'auth_acl' ,'action' => 'user_admin'))."</p>";
+echo "<p><img src=\"/zaftracl/img/users.png\" /> ".$html->link('User Administration', array('controller' => 'auth_acl' ,'action' => 'user_admin'))."</p>";
 
 echo "<h3>ACL Rules</h3>";
 
@@ -122,7 +122,7 @@ if (!empty($acl_records)) {
 			echo "<td>{$record['AuthAcl']['action']}</td>";
 			echo "<td>{$record['AuthAcl']['permission']}</td>";
 			echo "<td>{$record['AuthAcl']['description']}</td>";
-			echo "<td>". $html->link($html->image("/auth_acl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
+			echo "<td>". $html->link($html->image("/zaftracl/img/delete.png", array('title' => 'Delete', 'alt' => 'Del'))." ",
 									 array('action' => 'delete_item', 'acl_rule', $record['AuthAcl']['id'], $delete_key),
 									 false,
 									 'Confirm deletion of this ACL record?',

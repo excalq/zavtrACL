@@ -1,13 +1,13 @@
 <?php
 
 //Load the jQuery core
-$javascript->link('/auth_acl/js/jquery.min.js', false);
+$javascript->link('/zaftracl/js/jquery.min.js', false);
 
 //and now... some file that will be specific to this view (page)
-$javascript->link('/auth_acl/js/acl_admin.js', false);
+$javascript->link('/zaftracl/js/acl_admin.js', false);
 
 // Plugin stylesheet
-echo $html->css('/auth_acl/css/auth_acl_styles.css');
+echo $html->css('/zaftracl/css/auth_acl_styles.css');
 
 $session->flash(); // this line displays our flash messages
 	
